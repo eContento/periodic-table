@@ -31,6 +31,7 @@ public class ElementService {
 			entity.period = dto.period;
 			entity.name = dto.name;
 			entity.update();
+			return Response.status(201).build();
 		}
 		return Response.status(400).build();
 	}

@@ -105,6 +105,21 @@ class ElementResourceTest {
 	
 	@Test
     void cuando_PUT_de_un_elemento_existente_entonces_lo_actualiza_y_OK_201() {
+		ElementDto hydrogenDto = createHydrogen();
+		ElementEntity hydrogenEntity = spyHydrogenEntity();
+		
+		doNothing().when(hydrogenEntity).update();
+		when(ElementEntity.findBySymbol("H")).thenReturn(hydrogenEntity);
+		
+		given()
+		.when()
+			.header("Content-Type", "application/json")
+			.body(hydrogenDto)
+			.put(BASE_PATH)
+		.then()
+			.statusCode(201);
+		
+		verify(hydrogenEntity,times(1)).update();
     }
 
 	@Test
