@@ -27,8 +27,8 @@ public class ElementResource {
     }
     	
     @POST
-    public Response createElement(@Valid ElementDto dto) {
-    	return service.createElement(dto);
+    public Response create(@Valid ElementDto dto) {
+    	return service.create(dto);
     }
 }
 

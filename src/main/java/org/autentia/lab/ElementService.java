@@ -10,18 +10,17 @@ public class ElementService {
 	@Inject
 	public MapperService mapper;
 	
-	public Response createElement(ElementDto dto) {
+	public Response create(ElementDto dto) {		
+		if (alreadyExists(dto)) {
+			return Response.status(201).build();
+		}
 		
-		if (!exists(dto)) {
-			ElementEntity entity = mapper.toEntity(dto);
-			entity.persist();
-			return Response.ok().build();
-		} 
-		
-		return Response.status(201).build();
+		ElementEntity entity = mapper.toEntity(dto);
+		entity.persist();
+		return Response.ok().build();
 	}
 
-	private boolean exists(ElementDto dto) {
+	private boolean alreadyExists(ElementDto dto) {
 		return (ElementEntity.findBySymbol(dto.symbol) != null);
 	}
 }
