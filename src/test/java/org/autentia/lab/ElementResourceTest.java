@@ -88,6 +88,19 @@ class ElementResourceTest {
 	
 	@Test
     void cuando_PUT_de_un_elemento_nuevo_entonces_NO_lo_crea_y_ERROR_400() {
+		ElementDto hydrogenDto = createHydrogen();
+		
+		when(ElementEntity.findBySymbol("H")).thenReturn(null);
+		
+		given()
+		.when()
+			.header("Content-Type", "application/json")
+			.body(hydrogenDto)
+			.put(BASE_PATH)
+		.then()
+			.statusCode(400);
+		
+		verify(mapper,never()).toEntity(any());
     }
 	
 	@Test
