@@ -4,6 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -35,6 +36,11 @@ public class ElementResource {
     @PUT
     public Response update(@Valid ElementDto dto) {
     	return service.update(dto);
+    }
+    
+    @DELETE
+    public Response delete(@Valid ElementDto dto) {
+    	return service.delete(dto);
     }
     
     

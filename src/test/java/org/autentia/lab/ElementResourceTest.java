@@ -124,10 +124,36 @@ class ElementResourceTest {
 
 	@Test
     void cuando_DELETE_de_un_elemento_existente_entonces_lo_borra_y_OK_200() {
+		ElementDto hydrogenDto = createHydrogen();
+		ElementEntity hydrogenEntity = spyHydrogenEntity();
+		
+		doNothing().when(hydrogenEntity).delete();
+		when(ElementEntity.findBySymbol("H")).thenReturn(hydrogenEntity);
+		
+		given()
+		.when()
+			.header("Content-Type", "application/json")
+			.body(hydrogenDto)
+			.delete(BASE_PATH)
+		.then()
+			.statusCode(200);
+		
+		verify(hydrogenEntity,times(1)).delete();
     }
 
     @Test
     void cuando_DELETE_de_un_elemento_que_NO_existe_entonces_no_borro_nada_pero_OK_200() {
+    	ElementDto hydrogenDto = createHydrogen();
+		
+		when(ElementEntity.findBySymbol("H")).thenReturn(null);
+		
+		given()
+		.when()
+			.header("Content-Type", "application/json")
+			.body(hydrogenDto)
+			.delete(BASE_PATH)
+		.then()
+			.statusCode(200);
     }
 
     @Test

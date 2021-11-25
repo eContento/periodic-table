@@ -35,10 +35,20 @@ public class ElementService {
 		}
 		return Response.status(400).build();
 	}
+	
+	public Response delete(@Valid ElementDto dto) {
+		ElementEntity entity = ElementEntity.findBySymbol(dto.symbol);
+		if (entity != null) {
+			entity.delete();
+		}
+		return Response.ok().build();
+	}
 
 	private boolean alreadyExists(ElementDto dto) {
 		return (ElementEntity.findBySymbol(dto.symbol) != null);
 	}
+
+	
 
 	
 }
