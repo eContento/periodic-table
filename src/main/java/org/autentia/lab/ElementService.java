@@ -2,6 +2,7 @@ package org.autentia.lab;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 @ApplicationScoped
@@ -19,8 +20,24 @@ public class ElementService {
 		entity.persist();
 		return Response.ok().build();
 	}
+	
+	public Response update(@Valid ElementDto dto) {
+		ElementEntity entity = ElementEntity.findBySymbol(dto.symbol);
+		if (entity != null) {
+			entity.atomicMass = dto.atomicMass;
+			entity.atomicNumber = dto.atomicNumber;
+			entity.electronConfiguration = dto.electronConfiguration;
+			entity.group = dto.group;
+			entity.period = dto.period;
+			entity.name = dto.name;
+			entity.update();
+		}
+		return Response.status(400).build();
+	}
 
 	private boolean alreadyExists(ElementDto dto) {
 		return (ElementEntity.findBySymbol(dto.symbol) != null);
 	}
+
+	
 }
