@@ -2,6 +2,7 @@ package org.autentia.lab;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -158,10 +159,39 @@ class ElementResourceTest {
 
     @Test
     void cuando_GET_de_un_simbolo_que_existe_entonces_devuelve_el_elemento_y_OK_200() {
+		ElementEntity hydrogenEntity = spyHydrogenEntity();
+		
+		when(ElementEntity.findBySymbol("H")).thenReturn(hydrogenEntity);
+		when(mapper.toDto(hydrogenEntity)).thenReturn(createHydrogen());
+		
+		ElementDto dto = given()
+		.when()
+			.header("Content-Type", "application/json")
+			.get(BASE_PATH + "/H")
+		.then()
+			.statusCode(200)
+			.extract()
+			.body()
+			.as(ElementDto.class);
+		
+		assertEquals(dto.name, hydrogenEntity.name);
+		assertEquals(dto.atomicMass, hydrogenEntity.atomicMass);
+		assertEquals(dto.atomicNumber, hydrogenEntity.atomicNumber);
+		assertEquals(dto.electronConfiguration, hydrogenEntity.electronConfiguration);
+		assertEquals(dto.group, hydrogenEntity.group);
+		assertEquals(dto.period, hydrogenEntity.period);
     }
     
     @Test
     void cuando_GET_de_un_simbolo_que_NO_existe_entonces_ERROR_404() {
+		when(ElementEntity.findBySymbol("H")).thenReturn(null);
+		
+		given()
+		.when()
+			.header("Content-Type", "application/json")
+			.get(BASE_PATH + "/H")
+		.then()
+			.statusCode(404);		
     }
     
     private ElementDto createHydrogen() {

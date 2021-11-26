@@ -20,4 +20,19 @@ public class MapperService {
 		return null;
 	}
 
+	public ElementDto toDto(ElementEntity entity) {
+		if (entity!=null) {
+			ElementDto dto = new ElementDto();
+			dto.symbol = entity.symbol;
+			dto.name = entity.name;
+			dto.group = entity.group;
+			dto.period = entity.period;
+			dto.atomicNumber = entity.atomicNumber;
+			dto.atomicMass = entity.atomicMass;
+			dto.electronConfiguration = entity.electronConfiguration;
+			return dto;
+		}
+		return null;
+	}
+
 }

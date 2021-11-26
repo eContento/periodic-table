@@ -48,6 +48,15 @@ public class ElementService {
 		return (ElementEntity.findBySymbol(dto.symbol) != null);
 	}
 
+	public Response get(String symbol) {
+		ElementEntity entity = ElementEntity.findBySymbol(symbol);
+		if (entity != null) {
+			ElementDto dto = mapper.toDto(entity);
+			return Response.ok().entity(dto).build();
+		}
+		return Response.status(404).build();
+	}
+
 	
 
 	
